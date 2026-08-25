@@ -20,7 +20,7 @@ public class Solicitacao {
     private BigDecimal valor;
 
     private LocalDateTime data_solicitacao;
-
+    
     @Enumerated(EnumType.STRING)
     private StatusSolicitacao statusSolicitacao;
 
@@ -80,6 +80,14 @@ public class Solicitacao {
 
     public void setStatusSolicitacao(StatusSolicitacao statusSolicitacao) {
         this.statusSolicitacao = statusSolicitacao;
+    }
+
+    public void setSolicitante(Solicitante solicitante) {
+        this.solicitante = solicitante;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
     @Override

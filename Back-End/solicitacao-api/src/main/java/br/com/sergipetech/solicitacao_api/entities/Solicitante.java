@@ -15,6 +15,7 @@ public class Solicitante {
     private Long id;
 
     private String nome;
+
     private String cpfCnpj;
 
     @OneToMany(mappedBy = "solicitante")
