@@ -28,7 +28,7 @@ public class SolicitacaoService {
     private SolicitacaoRepository solicitacaoRepository;
 
 
-    public SolicitacaoResponseDTO criar(SolicitacaoRequestDTO request) {
+    public SolicitacaoResponseDTO criarSolicitacao(SolicitacaoRequestDTO request) {
 
         Solicitante solicitante = validarSolicitante(request);
         Categoria categoria = validarCategoria((request));
