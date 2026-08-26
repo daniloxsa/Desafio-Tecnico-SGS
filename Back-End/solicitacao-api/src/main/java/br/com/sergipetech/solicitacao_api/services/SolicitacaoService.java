@@ -9,6 +9,7 @@ import br.com.sergipetech.solicitacao_api.enums.StatusSolicitacao;
 import br.com.sergipetech.solicitacao_api.repositories.CategoriaRepository;
 import br.com.sergipetech.solicitacao_api.repositories.SolicitacaoRepository;
 import br.com.sergipetech.solicitacao_api.repositories.SolicitanteRepository;
+import br.com.sergipetech.solicitacao_api.services.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,8 +41,6 @@ public class SolicitacaoService {
         solicitacao.setSolicitante(solicitante);
         solicitacao.setCategoria(categoria);
 
-        //regra de negocio: Toda solicitação deve iniciar com status SOLICITADO
-        solicitacao.setStatusSolicitacao(StatusSolicitacao.SOLICITADO);
 
         solicitacao.setData_solicitacao(LocalDateTime.now());
 
@@ -64,6 +63,15 @@ public class SolicitacaoService {
 
     }
 
+    public void deletarPorId(Long id) {
+
+        if (!solicitacaoRepository.existsById(id)) {
+            throw new ResourceNotFoundException(id);
+        }
+
+        solicitacaoRepository.deleteById(id);
+
+    }
 
     private Solicitante validarSolicitante(SolicitacaoRequestDTO request) {
         Optional<Solicitante> solicitante = solicitanteRepository.findById(request.solicitanteId());

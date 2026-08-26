@@ -1,9 +1,11 @@
 package br.com.sergipetech.solicitacao_api.controllers;
 
-import br.com.sergipetech.solicitacao_api.dto.solicitante.SolicitanteRequestDTO;
+import br.com.sergipetech.solicitacao_api.dto.solicitacao.SolicitacaoRequestDTO;
+import br.com.sergipetech.solicitacao_api.dto.solicitacao.SolicitacaoResponseDTO;
 import br.com.sergipetech.solicitacao_api.dto.solicitante.SolicitanteResponseDTO;
-import br.com.sergipetech.solicitacao_api.services.SolicitanteService;
+import br.com.sergipetech.solicitacao_api.services.SolicitacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -11,38 +13,30 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/solicitantes")
-public class SolicitanteController {
+@RequestMapping("/solicitacoes")
+public class SolicitacaoController {
 
     @Autowired
-    private SolicitanteService service;
+    private SolicitacaoService service;
 
 
-    @GetMapping("/{id}")
-    public ResponseEntity<SolicitanteResponseDTO> buscarPorId(@PathVariable Long id) {
 
-        SolicitanteResponseDTO response = service.buscarPorId(id);
-
-        return ResponseEntity.ok(response);
-
-    }
 
     @PostMapping
-    public ResponseEntity<SolicitanteResponseDTO> criarSolicitante(@RequestBody SolicitanteRequestDTO requestDTO) {
-        SolicitanteResponseDTO responseDTO = service.criarSolicitante(requestDTO);
+    public ResponseEntity<SolicitacaoResponseDTO> criarSolicitacao(@RequestBody SolicitacaoRequestDTO solicitacaoDTO) {
+        SolicitacaoResponseDTO responseDTO = service.criarSolicitacao(solicitacaoDTO);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(responseDTO.id()).toUri();
 
         return ResponseEntity.created(uri).body(responseDTO);
+
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarPorId(@PathVariable Long id) {
-        service.deletarPorId(id);
 
+        service.deletarPorId(id);
         return ResponseEntity.noContent().build();
     }
-
-
 
 }

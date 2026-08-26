@@ -22,7 +22,7 @@ public class Solicitacao {
     private LocalDateTime data_solicitacao;
     
     @Enumerated(EnumType.STRING)
-    private StatusSolicitacao statusSolicitacao;
+    private StatusSolicitacao statusSolicitacao = StatusSolicitacao.SOLICITADO;
 
     @ManyToOne
     @JoinColumn(name = "id_solicitante")

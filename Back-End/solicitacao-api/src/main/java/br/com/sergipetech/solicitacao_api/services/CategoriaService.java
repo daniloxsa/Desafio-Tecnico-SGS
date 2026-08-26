@@ -6,6 +6,7 @@ import br.com.sergipetech.solicitacao_api.entities.Categoria;
 import br.com.sergipetech.solicitacao_api.entities.Solicitante;
 import br.com.sergipetech.solicitacao_api.repositories.CategoriaRepository;
 import br.com.sergipetech.solicitacao_api.repositories.SolicitanteRepository;
+import br.com.sergipetech.solicitacao_api.services.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class CategoriaService {
         Optional<Categoria> categoriaOptional  = categoriaRepository.findById(id);
 
         if (categoriaOptional.isEmpty()) {
-            throw new RuntimeException("Não encontrado");
+            throw new ResourceNotFoundException(id);
 
         }
 
