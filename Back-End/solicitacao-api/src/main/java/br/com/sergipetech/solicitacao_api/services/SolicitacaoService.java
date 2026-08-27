@@ -2,6 +2,7 @@ package br.com.sergipetech.solicitacao_api.services;
 
 import br.com.sergipetech.solicitacao_api.dto.solicitacao.SolicitacaoRequestDTO;
 import br.com.sergipetech.solicitacao_api.dto.solicitacao.SolicitacaoResponseDTO;
+import br.com.sergipetech.solicitacao_api.dto.solicitacao.StatusSolicitacaoRequestDTO;
 import br.com.sergipetech.solicitacao_api.entities.Categoria;
 import br.com.sergipetech.solicitacao_api.entities.Solicitacao;
 import br.com.sergipetech.solicitacao_api.entities.Solicitante;
@@ -10,6 +11,7 @@ import br.com.sergipetech.solicitacao_api.repositories.CategoriaRepository;
 import br.com.sergipetech.solicitacao_api.repositories.SolicitacaoRepository;
 import br.com.sergipetech.solicitacao_api.repositories.SolicitanteRepository;
 import br.com.sergipetech.solicitacao_api.services.exception.ResourceNotFoundException;
+import br.com.sergipetech.solicitacao_api.services.exception.StatusTransactionError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -72,6 +74,62 @@ public class SolicitacaoService {
         solicitacaoRepository.deleteById(id);
 
     }
+
+    public SolicitacaoResponseDTO alterarStatus(Long id, StatusSolicitacaoRequestDTO request) {
+        Optional<Solicitacao> solicitacaoOptional = solicitacaoRepository.findById(id) ;
+
+        if (solicitacaoOptional.isEmpty()) {
+            throw new ResourceNotFoundException(id);
+        }
+
+        Solicitacao solicitacao = solicitacaoOptional.get();
+
+        StatusSolicitacao statusAtual = solicitacao.getStatusSolicitacao();
+        StatusSolicitacao novoStatus = request.statusSolicitacao();
+        
+
+        validarTransicao(statusAtual, novoStatus);
+
+        solicitacao.setStatusSolicitacao(novoStatus);
+
+        solicitacaoRepository.save(solicitacao);
+
+        return new SolicitacaoResponseDTO(
+                solicitacao.getId(),
+                solicitacao.getDescricao(),
+                solicitacao.getValor(),
+                solicitacao.getData_solicitacao(),
+                solicitacao.getStatusSolicitacao(),
+                solicitacao.getSolicitante().getId(),
+                solicitacao.getSolicitante().getNome(),
+                solicitacao.getSolicitante().getCpfCnpj(),
+                solicitacao.getCategoria().getId(),
+                solicitacao.getCategoria().getNome()
+        );
+
+    }
+
+
+
+
+    private void validarTransicao(StatusSolicitacao atual, StatusSolicitacao novo) {
+        if (atual == StatusSolicitacao.SOLICITADO) {
+            if (novo != StatusSolicitacao.LIBERADO && novo != StatusSolicitacao.REJEITADO) {
+                throw new StatusTransactionError("Violação na hierarquia de transição de status");
+            }
+        } else if (atual == StatusSolicitacao.LIBERADO) {
+            if (novo != StatusSolicitacao.APROVADO && novo != StatusSolicitacao.REJEITADO) {
+                throw new StatusTransactionError("Violação na hierarquia de transição de status");
+            }
+        } else if (atual == StatusSolicitacao.APROVADO) {
+            if ((novo != StatusSolicitacao.CANCELADO)) {
+                throw new StatusTransactionError("Violação na hierarquia de transição de status");
+            }
+        } else if (atual == StatusSolicitacao.REJEITADO || atual == StatusSolicitacao.CANCELADO) {
+            throw new StatusTransactionError("Violação na hierarquia de transição de status");
+        }
+    }
+
 
     private Solicitante validarSolicitante(SolicitacaoRequestDTO request) {
         Optional<Solicitante> solicitante = solicitanteRepository.findById(request.solicitanteId());

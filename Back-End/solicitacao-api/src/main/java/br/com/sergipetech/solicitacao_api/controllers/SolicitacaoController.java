@@ -2,6 +2,7 @@ package br.com.sergipetech.solicitacao_api.controllers;
 
 import br.com.sergipetech.solicitacao_api.dto.solicitacao.SolicitacaoRequestDTO;
 import br.com.sergipetech.solicitacao_api.dto.solicitacao.SolicitacaoResponseDTO;
+import br.com.sergipetech.solicitacao_api.dto.solicitacao.StatusSolicitacaoRequestDTO;
 import br.com.sergipetech.solicitacao_api.dto.solicitante.SolicitanteResponseDTO;
 import br.com.sergipetech.solicitacao_api.services.SolicitacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,15 @@ public class SolicitacaoController {
 
         service.deletarPorId(id);
         return ResponseEntity.noContent().build();
+    }
+
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<SolicitacaoResponseDTO> alterarStatus(@PathVariable Long id, @RequestBody StatusSolicitacaoRequestDTO requestDTO) {
+
+        SolicitacaoResponseDTO responseDTO = service.alterarStatus(id, requestDTO);
+
+        return ResponseEntity.ok(responseDTO);
     }
 
 }

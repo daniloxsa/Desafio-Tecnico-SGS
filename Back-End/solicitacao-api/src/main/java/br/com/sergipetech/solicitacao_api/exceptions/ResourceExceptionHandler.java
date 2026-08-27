@@ -1,6 +1,7 @@
 package br.com.sergipetech.solicitacao_api.exceptions;
 
 import br.com.sergipetech.solicitacao_api.services.exception.ResourceNotFoundException;
+import br.com.sergipetech.solicitacao_api.services.exception.StatusTransactionError;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -33,5 +34,15 @@ public class ResourceExceptionHandler {
 
     }
 
+
+    @ExceptionHandler(StatusTransactionError.class)
+    public ResponseEntity<StandardError> transactionStatus(StatusTransactionError exception, HttpServletRequest request) {
+        String error = exception.getMessage();
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        StandardError err = new StandardError(Instant.now(), status.value(), error, exception.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+
+    }
 }
 

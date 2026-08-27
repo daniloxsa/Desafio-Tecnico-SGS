@@ -90,6 +90,14 @@ public class Solicitacao {
         this.categoria = categoria;
     }
 
+    public Solicitante getSolicitante() {
+        return solicitante;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
