@@ -1,5 +1,6 @@
 package br.com.sergipetech.solicitacao_api.exceptions;
 
+import br.com.sergipetech.solicitacao_api.services.exception.InvalidDocumentException;
 import br.com.sergipetech.solicitacao_api.services.exception.ResourceNotFoundException;
 import br.com.sergipetech.solicitacao_api.services.exception.StatusTransactionError;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.Instant;
-
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
@@ -26,7 +26,7 @@ public class ResourceExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<StandardError> database(DataIntegrityViolationException exception, HttpServletRequest request) {
-        String error = "Violação de integridade, impossivel deletar";
+        String error = "Erro em executar operação em banco de dados";
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
         StandardError err = new StandardError(Instant.now(), status.value(), error, exception.getMessage(), request.getRequestURI());
@@ -38,6 +38,17 @@ public class ResourceExceptionHandler {
     @ExceptionHandler(StatusTransactionError.class)
     public ResponseEntity<StandardError> transactionStatus(StatusTransactionError exception, HttpServletRequest request) {
         String error = exception.getMessage();
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        StandardError err = new StandardError(Instant.now(), status.value(), error, exception.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+
+    }
+
+
+    @ExceptionHandler(InvalidDocumentException.class)
+    public ResponseEntity<StandardError> invalidDocument(InvalidDocumentException exception, HttpServletRequest request) {
+        String error = "Erro em validar a veracidade das credencias";
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
         StandardError err = new StandardError(Instant.now(), status.value(), error, exception.getMessage(), request.getRequestURI());

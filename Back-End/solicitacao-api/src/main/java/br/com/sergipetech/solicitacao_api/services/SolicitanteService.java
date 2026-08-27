@@ -6,7 +6,9 @@ import br.com.sergipetech.solicitacao_api.dto.solicitante.SolicitanteResponseDTO
 import br.com.sergipetech.solicitacao_api.entities.Solicitacao;
 import br.com.sergipetech.solicitacao_api.entities.Solicitante;
 import br.com.sergipetech.solicitacao_api.repositories.SolicitanteRepository;
+import br.com.sergipetech.solicitacao_api.services.exception.InvalidDocumentException;
 import br.com.sergipetech.solicitacao_api.services.exception.ResourceNotFoundException;
+import br.com.sergipetech.solicitacao_api.services.utilities.DocumentoValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,15 @@ public class SolicitanteService {
     }
 
     public SolicitanteResponseDTO criarSolicitante(SolicitanteRequestDTO request) {
+
+        if (!DocumentoValidator.isValido(request.cpfCnpj())) {
+            throw new InvalidDocumentException(request.cpfCnpj());
+        }
+
+
+        if (solicitanteRepository.existsByCpfCnpj(request.cpfCnpj())) {
+            throw new DataIntegrityViolationException("CPF/CNPJ já cadastrado");
+        }
 
         Solicitante solicitante = new Solicitante(
                 request.nome(),

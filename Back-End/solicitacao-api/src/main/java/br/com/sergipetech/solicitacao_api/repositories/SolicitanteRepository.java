@@ -5,5 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SolicitanteRepository extends JpaRepository<Solicitante, Long> {
 
+    boolean existsByCpfCnpj(String cpfCnpj);
+
 
 }
