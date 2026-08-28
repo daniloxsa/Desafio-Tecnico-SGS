@@ -10,6 +10,7 @@ import br.com.sergipetech.solicitacao_api.services.exception.ResourceNotFoundExc
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,6 +18,24 @@ public class CategoriaService {
 
     @Autowired
     private CategoriaRepository categoriaRepository;
+
+
+    public List<CategoriaResponseDTO> buscarTodos() {
+        List<Categoria> categorias = categoriaRepository.findAll();
+
+        if (categorias.isEmpty()) {
+            throw new ResourceNotFoundException("Não há registros dessa entidade no banco de dados");
+        }
+
+        List<CategoriaResponseDTO> responseDTO = categorias.stream()
+                .map(s -> new CategoriaResponseDTO(
+                        s.getId(),
+                        s.getNome()
+                )).toList();
+
+        return responseDTO;
+
+    }
 
     public CategoriaResponseDTO buscarPorId(Long id) {
         Optional<Categoria> categoriaOptional  = categoriaRepository.findById(id);

@@ -1,6 +1,7 @@
 package br.com.sergipetech.solicitacao_api.services;
 
 import br.com.sergipetech.solicitacao_api.dto.solicitacao.SolicitacaoRequestDTO;
+import br.com.sergipetech.solicitacao_api.dto.solicitacao.SolicitacaoResponseDTO;
 import br.com.sergipetech.solicitacao_api.dto.solicitante.SolicitanteRequestDTO;
 import br.com.sergipetech.solicitacao_api.dto.solicitante.SolicitanteResponseDTO;
 import br.com.sergipetech.solicitacao_api.entities.Solicitacao;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,6 +23,25 @@ public class SolicitanteService {
 
     @Autowired
     private SolicitanteRepository solicitanteRepository;
+
+
+    public List<SolicitanteResponseDTO> buscarTodos() {
+        List<Solicitante> solicitantes = solicitanteRepository.findAll();
+
+        if (solicitantes.isEmpty()) {
+            throw new ResourceNotFoundException("Não há registros dessa entidade no banco de dados");
+        }
+
+        List<SolicitanteResponseDTO> responseDTO = solicitantes.stream()
+                .map(s -> new SolicitanteResponseDTO(
+                        s.getId(),
+                        s.getNome(),
+                        s.getCpfCnpj()
+                )).toList();
+
+        return responseDTO;
+
+    }
 
     public SolicitanteResponseDTO buscarPorId(Long id) {
         Optional<Solicitante> solicitanteOptional  = solicitanteRepository.findById(id);

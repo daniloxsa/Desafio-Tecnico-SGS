@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,13 +30,20 @@ public class SolicitacaoController {
             @RequestParam(required = false) StatusSolicitacao status,
             @RequestParam(required = false) Long categoriaId,
             @RequestParam(required = false) LocalDateTime dataInicio,
-            @RequestParam(required = false) LocalDateTime dataFim) {
+            @RequestParam(required = false) LocalDateTime dataFim,
+            @RequestParam(required = false) BigDecimal valorMin,
+            @RequestParam(required = false) BigDecimal valorMax
+    ) {
+
 
         List<SolicitacaoResponseDTO> responseDTOS = service.listarSolicitacoes(
                 status,
                 categoriaId,
                 dataInicio,
-                dataFim
+                dataFim,
+                valorMin,
+                valorMax
+
         );
 
         return ResponseEntity.ok().body(responseDTOS);

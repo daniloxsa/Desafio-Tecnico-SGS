@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,11 +26,15 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
       AND (:categoriaId IS NULL OR s.id_categoria = :categoriaId)
       AND (:dataInicio IS NULL OR s.data_solicitacao >= :dataInicio)
       AND (:dataFim IS NULL OR s.data_solicitacao <= :dataFim)
+      AND (:valorMin IS NULL OR s.valor >= :valorMin)
+      AND (:valorMax IS NULL OR s.valor <= :valorMax)
     """, nativeQuery = true)
     List<SolicitacaoProjection> listarSolicitacoes(
             @Param("status") String status,
             @Param("categoriaId") Long categoriaId,
             @Param("dataInicio") LocalDateTime dataInicio,
-            @Param("dataFim") LocalDateTime dataFim
+            @Param("dataFim") LocalDateTime dataFim,
+            @Param("valorMin") BigDecimal valorMin,
+            @Param("valorMax") BigDecimal valorMax
     );
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/solicitantes")
@@ -16,6 +17,15 @@ public class SolicitanteController {
 
     @Autowired
     private SolicitanteService service;
+
+    @GetMapping
+    public ResponseEntity<List<SolicitanteResponseDTO>> buscarTodos() {
+
+        List<SolicitanteResponseDTO> responseDTOS = service.buscarTodos();
+
+        return ResponseEntity.ok().body(responseDTOS);
+
+    }
 
 
     @GetMapping("/{id}")

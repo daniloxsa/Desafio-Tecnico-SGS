@@ -19,4 +19,7 @@ public interface SolicitacaoProjection {
 
     Long getCategoriaId();
     String getCategoriaNome();
+
+    BigDecimal getValorMin();
+    BigDecimal getValorMax();
 }

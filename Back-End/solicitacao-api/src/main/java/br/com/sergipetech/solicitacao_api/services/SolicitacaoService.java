@@ -16,6 +16,8 @@ import br.com.sergipetech.solicitacao_api.services.exception.StatusTransactionEr
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -37,14 +39,20 @@ public class SolicitacaoService {
             StatusSolicitacao status,
             Long categoriaId,
             LocalDateTime dataInicio,
-            LocalDateTime dataFim) {
+            LocalDateTime dataFim,
+            BigDecimal valorMin,
+            BigDecimal valorMax
+    ) {
 
         List<SolicitacaoProjection> solicitacaoProjection =
                 solicitacaoRepository.listarSolicitacoes(
                         status != null ? status.name() : null,
                         categoriaId,
                         dataInicio,
-                        dataFim
+                        dataFim,
+                        valorMin,
+                        valorMax
+
                 );
 
         List<SolicitacaoResponseDTO> responseDTOS = solicitacaoProjection.stream()

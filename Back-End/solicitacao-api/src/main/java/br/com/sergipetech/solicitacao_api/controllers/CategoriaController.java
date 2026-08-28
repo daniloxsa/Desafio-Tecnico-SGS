@@ -10,12 +10,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/categorias")
 public class CategoriaController {
 
     @Autowired
     private CategoriaService service;
+
+    @GetMapping
+    public ResponseEntity<List<CategoriaResponseDTO>> buscarTodos() {
+
+        List<CategoriaResponseDTO> responseDTOS = service.buscarTodos();
+
+        return ResponseEntity.ok().body(responseDTOS);
+
+    }
+
 
 
     @GetMapping("/{id}")
