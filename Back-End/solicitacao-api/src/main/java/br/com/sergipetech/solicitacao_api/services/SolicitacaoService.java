@@ -10,12 +10,14 @@ import br.com.sergipetech.solicitacao_api.enums.StatusSolicitacao;
 import br.com.sergipetech.solicitacao_api.repositories.CategoriaRepository;
 import br.com.sergipetech.solicitacao_api.repositories.SolicitacaoRepository;
 import br.com.sergipetech.solicitacao_api.repositories.SolicitanteRepository;
+import br.com.sergipetech.solicitacao_api.repositories.queries.SolicitacaoProjection;
 import br.com.sergipetech.solicitacao_api.services.exception.ResourceNotFoundException;
 import br.com.sergipetech.solicitacao_api.services.exception.StatusTransactionError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,6 +31,40 @@ public class SolicitacaoService {
 
     @Autowired
     private SolicitacaoRepository solicitacaoRepository;
+
+
+    public List<SolicitacaoResponseDTO> listarSolicitacoes(
+            StatusSolicitacao status,
+            Long categoriaId,
+            LocalDateTime dataInicio,
+            LocalDateTime dataFim) {
+
+        List<SolicitacaoProjection> solicitacaoProjection =
+                solicitacaoRepository.listarSolicitacoes(
+                        status != null ? status.name() : null,
+                        categoriaId,
+                        dataInicio,
+                        dataFim
+                );
+
+        List<SolicitacaoResponseDTO> responseDTOS = solicitacaoProjection.stream()
+                .map(s -> new SolicitacaoResponseDTO(
+                        s.getId(),
+                        s.getDescricao(),
+                        s.getValor(),
+                        s.getDataSolicitacao(),
+                        s.getStatus(),
+                        s.getSolicitanteId(),
+                        s.getSolicitanteNome(),
+                        s.getSolicitanteCpfCnpj(),
+                        s.getCategoriaId(),
+                        s.getCategoriaNome()
+                ))
+                .toList();
+
+        return responseDTOS;
+    }
+
 
 
     public SolicitacaoResponseDTO criarSolicitacao(SolicitacaoRequestDTO request) {

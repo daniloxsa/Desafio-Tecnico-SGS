@@ -4,6 +4,7 @@ import br.com.sergipetech.solicitacao_api.dto.solicitacao.SolicitacaoRequestDTO;
 import br.com.sergipetech.solicitacao_api.dto.solicitacao.SolicitacaoResponseDTO;
 import br.com.sergipetech.solicitacao_api.dto.solicitacao.StatusSolicitacaoRequestDTO;
 import br.com.sergipetech.solicitacao_api.dto.solicitante.SolicitanteResponseDTO;
+import br.com.sergipetech.solicitacao_api.enums.StatusSolicitacao;
 import br.com.sergipetech.solicitacao_api.services.SolicitacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/solicitacoes")
@@ -19,6 +22,26 @@ public class SolicitacaoController {
 
     @Autowired
     private SolicitacaoService service;
+
+
+    @GetMapping
+    public ResponseEntity<List<SolicitacaoResponseDTO>> listarSolicitacoes (
+            @RequestParam(required = false) StatusSolicitacao status,
+            @RequestParam(required = false) Long categoriaId,
+            @RequestParam(required = false) LocalDateTime dataInicio,
+            @RequestParam(required = false) LocalDateTime dataFim) {
+
+        List<SolicitacaoResponseDTO> responseDTOS = service.listarSolicitacoes(
+                status,
+                categoriaId,
+                dataInicio,
+                dataFim
+        );
+
+        return ResponseEntity.ok().body(responseDTOS);
+
+
+    }
 
 
 
