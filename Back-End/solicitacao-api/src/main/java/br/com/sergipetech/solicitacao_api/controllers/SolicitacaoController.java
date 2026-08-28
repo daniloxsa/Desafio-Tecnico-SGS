@@ -3,11 +3,10 @@ package br.com.sergipetech.solicitacao_api.controllers;
 import br.com.sergipetech.solicitacao_api.dto.solicitacao.SolicitacaoRequestDTO;
 import br.com.sergipetech.solicitacao_api.dto.solicitacao.SolicitacaoResponseDTO;
 import br.com.sergipetech.solicitacao_api.dto.solicitacao.StatusSolicitacaoRequestDTO;
-import br.com.sergipetech.solicitacao_api.dto.solicitante.SolicitanteResponseDTO;
 import br.com.sergipetech.solicitacao_api.enums.StatusSolicitacao;
 import br.com.sergipetech.solicitacao_api.services.SolicitacaoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -55,7 +54,7 @@ public class SolicitacaoController {
 
 
     @PostMapping
-    public ResponseEntity<SolicitacaoResponseDTO> criarSolicitacao(@RequestBody SolicitacaoRequestDTO solicitacaoDTO) {
+    public ResponseEntity<SolicitacaoResponseDTO> criarSolicitacao(@Valid @RequestBody SolicitacaoRequestDTO solicitacaoDTO) {
         SolicitacaoResponseDTO responseDTO = service.criarSolicitacao(solicitacaoDTO);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(responseDTO.id()).toUri();
@@ -73,7 +72,7 @@ public class SolicitacaoController {
 
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<SolicitacaoResponseDTO> alterarStatus(@PathVariable Long id, @RequestBody StatusSolicitacaoRequestDTO requestDTO) {
+    public ResponseEntity<SolicitacaoResponseDTO> alterarStatus(@Valid @PathVariable Long id, @RequestBody StatusSolicitacaoRequestDTO requestDTO) {
 
         SolicitacaoResponseDTO responseDTO = service.alterarStatus(id, requestDTO);
 

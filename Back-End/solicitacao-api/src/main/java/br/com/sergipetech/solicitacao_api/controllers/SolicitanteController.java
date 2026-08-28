@@ -3,6 +3,7 @@ package br.com.sergipetech.solicitacao_api.controllers;
 import br.com.sergipetech.solicitacao_api.dto.solicitante.SolicitanteRequestDTO;
 import br.com.sergipetech.solicitacao_api.dto.solicitante.SolicitanteResponseDTO;
 import br.com.sergipetech.solicitacao_api.services.SolicitanteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,7 @@ public class SolicitanteController {
     }
 
     @PostMapping
-    public ResponseEntity<SolicitanteResponseDTO> criarSolicitante(@RequestBody SolicitanteRequestDTO requestDTO) {
+    public ResponseEntity<SolicitanteResponseDTO> criarSolicitante(@Valid @RequestBody SolicitanteRequestDTO requestDTO) {
         SolicitanteResponseDTO responseDTO = service.criarSolicitante(requestDTO);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(responseDTO.id()).toUri();

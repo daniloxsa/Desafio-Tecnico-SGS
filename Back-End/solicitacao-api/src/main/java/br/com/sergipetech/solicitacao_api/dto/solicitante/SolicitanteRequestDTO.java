@@ -1,4 +1,13 @@
 package br.com.sergipetech.solicitacao_api.dto.solicitante;
 
-public record SolicitanteRequestDTO(String nome, String cpfCnpj) {
+
+import jakarta.validation.constraints.NotBlank;
+
+public record SolicitanteRequestDTO(
+
+        @NotBlank
+        String nome,
+
+        @NotBlank
+        String cpfCnpj) {
 }

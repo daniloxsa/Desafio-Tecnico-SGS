@@ -1,4 +1,9 @@
 package br.com.sergipetech.solicitacao_api.dto.categoria;
 
-public record CategoriaRequestDTO(String nome) {
+import jakarta.validation.constraints.NotBlank;
+
+public record CategoriaRequestDTO(
+
+        @NotBlank
+        String nome) {
 }

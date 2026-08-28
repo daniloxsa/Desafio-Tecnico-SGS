@@ -23,10 +23,6 @@ public class CategoriaService {
     public List<CategoriaResponseDTO> buscarTodos() {
         List<Categoria> categorias = categoriaRepository.findAll();
 
-        if (categorias.isEmpty()) {
-            throw new ResourceNotFoundException("Não há registros dessa entidade no banco de dados");
-        }
-
         List<CategoriaResponseDTO> responseDTO = categorias.stream()
                 .map(s -> new CategoriaResponseDTO(
                         s.getId(),

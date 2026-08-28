@@ -179,7 +179,7 @@ public class SolicitacaoService {
         Optional<Solicitante> solicitante = solicitanteRepository.findById(request.solicitanteId());
 
         if (solicitante.isEmpty()) {
-            throw new RuntimeException("Solicitante não encontrado");
+            throw new ResourceNotFoundException(request.solicitanteId());
         }
 
         return solicitante.get();
@@ -190,7 +190,7 @@ public class SolicitacaoService {
         Optional<Categoria> categoria = categoriaRepository.findById(request.categoriaId());
 
         if (categoria.isEmpty()) {
-            throw new RuntimeException("Solicitante não encontrado");
+            throw new ResourceNotFoundException(request.categoriaId());
         }
 
        return categoria.get();

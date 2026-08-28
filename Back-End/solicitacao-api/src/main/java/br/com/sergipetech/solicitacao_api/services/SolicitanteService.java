@@ -28,9 +28,6 @@ public class SolicitanteService {
     public List<SolicitanteResponseDTO> buscarTodos() {
         List<Solicitante> solicitantes = solicitanteRepository.findAll();
 
-        if (solicitantes.isEmpty()) {
-            throw new ResourceNotFoundException("Não há registros dessa entidade no banco de dados");
-        }
 
         List<SolicitanteResponseDTO> responseDTO = solicitantes.stream()
                 .map(s -> new SolicitanteResponseDTO(
