@@ -16,47 +16,95 @@
     </header>
 
     <main class="main-container">
+
         <h2 class="page-title">SOLICITAÇÕES</h2>
 
+        <!-- FILTROS -->
         <section class="filter-box">
             <div class="filter-inputs">
                 <select class="input-field">
                     <option value="">Status</option>
                 </select>
+
                 <select class="input-field">
                     <option value="">Categoria</option>
                 </select>
-                <input type="date" class="input-field" placeholder="data">
-                <input type="date" class="input-field" placeholder="data">
+
+                <input type="date" class="input-field">
+                <input type="date" class="input-field">
                 <input type="number" class="input-field" placeholder="valor">
                 <input type="number" class="input-field" placeholder="valor">
             </div>
+
             <div class="filter-actions">
                 <button class="btn-filter">FILTRAR</button>
                 <button class="btn-clear">LIMPAR</button>
             </div>
         </section>
 
-        <section class="cards-wrapper">
-            <div class="cards-grid" id="cardsContainer">
+        <!-- TABELA DE SOLICITAÇÕES -->
+        <section class="table-wrapper">
+            <table class="solicitacoes-table">
+                <thead>
+                    <tr>
+                        <th>Solicitante</th>
+                        <th>Data</th>
+                        <th>Categoria</th>
+                        <th>Status</th>
+                        <th>Valor</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
 
-                <article class="card">
-                    <div class="card-header">solicitanteNome</div>
-                    <div class="card-body">
-                        <p><strong>dataSolicitacao:</strong> 2026-08-29</p>
-                        <p><strong>categoriaNome:</strong> Material</p>
-                        <p><strong>status:</strong> SOLICITADO</p>
-                        <p><strong>valor:</strong> R$ 150,00</p>
-                        <button class="btn-details">Detalhes</button>
-                    </div>
-                </article>
+                <tbody id="tableContainer">
+                    <tr>
+                        <td>João Silva</td>
+                        <td>29/08/2026</td>
+                        <td>Material</td>
+                        <td>
+                            <span class="status solicitado">SOLICITADO</span>
+                        </td>
+                        <td>R$ 150,00</td>
+                        <td>
+                            <button class="btn-details">Ver mais</button>
+                        </td>
+                    </tr>
 
-            </div>
+                    <tr>
+                        <td>Maria Souza</td>
+                        <td>28/08/2026</td>
+                        <td>Equipamento</td>
+                        <td>
+                            <span class="status aprovado">APROVADO</span>
+                        </td>
+                        <td>R$ 850,00</td>
+                        <td>
+                            <button class="btn-details">Ver mais</button>
+                        </td>
+                    </tr>
 
+                    <tr>
+                        <td>Carlos Lima</td>
+                        <td>27/08/2026</td>
+                        <td>Serviço</td>
+                        <td>
+                            <span class="status rejeitado">REJEITADO</span>
+                        </td>
+                        <td>R$ 320,00</td>
+                        <td>
+                            <button class="btn-details">Ver mais</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- BOTÃO DE NOVA SOLICITAÇÃO -->
             <button class="btn-floating">+</button>
         </section>
+
     </main>
 
+    <!-- MODAL DE CRIAÇÃO -->
     <div class="modal-overlay" id="createModal">
         <div class="modal-content">
             <form class="modal-form">
@@ -64,12 +112,14 @@
                 <input type="text" class="modal-input" placeholder="categoria">
                 <input type="text" class="modal-input" placeholder="solicitante">
                 <textarea class="modal-input textarea" placeholder="descrição"></textarea>
+
                 <button type="button" class="btn-submit">CRIAR</button>
             </form>
         </div>
     </div>
 
     <script src="app.js"></script>
+
 </body>
 
 </html>
