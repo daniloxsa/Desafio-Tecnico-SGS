@@ -2,10 +2,12 @@ package br.com.sergipetech.solicitacao_api.services;
 
 import br.com.sergipetech.solicitacao_api.dto.solicitacao.SolicitacaoRequestDTO;
 import br.com.sergipetech.solicitacao_api.dto.solicitacao.SolicitacaoResponseDTO;
+import br.com.sergipetech.solicitacao_api.dto.solicitacao.SolicitacaoResumoResponseDTO;
 import br.com.sergipetech.solicitacao_api.dto.solicitante.SolicitanteRequestDTO;
 import br.com.sergipetech.solicitacao_api.dto.solicitante.SolicitanteResponseDTO;
 import br.com.sergipetech.solicitacao_api.entities.Solicitacao;
 import br.com.sergipetech.solicitacao_api.entities.Solicitante;
+import br.com.sergipetech.solicitacao_api.repositories.SolicitacaoRepository;
 import br.com.sergipetech.solicitacao_api.repositories.SolicitanteRepository;
 import br.com.sergipetech.solicitacao_api.services.exception.InvalidDocumentException;
 import br.com.sergipetech.solicitacao_api.services.exception.ResourceNotFoundException;
@@ -23,6 +25,30 @@ public class SolicitanteService {
 
     @Autowired
     private SolicitanteRepository solicitanteRepository;
+
+    @Autowired
+    private SolicitacaoRepository solicitacaoRepository;
+
+
+    public List<SolicitacaoResumoResponseDTO> buscarVariosPorId(Long id) {
+
+        if (!solicitanteRepository.existsById(id)) {
+            throw new ResourceNotFoundException(id);
+        }
+
+        List<Solicitacao> solicitacoes = solicitacaoRepository.findAllBySolicitante_Id(id);
+
+        List<SolicitacaoResumoResponseDTO> responseDTO = solicitacoes.stream()
+                .map(s -> new SolicitacaoResumoResponseDTO(
+                        s.getId(),
+                        s.getCategoria().getNome(),
+                        s.getValor(),
+                        s.getStatusSolicitacao()
+                )).toList();
+
+        return responseDTO;
+
+    }
 
 
     public List<SolicitanteResponseDTO> buscarTodos() {

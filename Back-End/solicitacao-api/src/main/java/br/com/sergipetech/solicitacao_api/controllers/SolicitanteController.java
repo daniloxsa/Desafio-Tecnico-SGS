@@ -1,5 +1,6 @@
 package br.com.sergipetech.solicitacao_api.controllers;
 
+import br.com.sergipetech.solicitacao_api.dto.solicitacao.SolicitacaoResumoResponseDTO;
 import br.com.sergipetech.solicitacao_api.dto.solicitante.SolicitanteRequestDTO;
 import br.com.sergipetech.solicitacao_api.dto.solicitante.SolicitanteResponseDTO;
 import br.com.sergipetech.solicitacao_api.services.SolicitanteService;
@@ -12,6 +13,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/solicitantes")
 public class SolicitanteController {
@@ -35,6 +38,16 @@ public class SolicitanteController {
         SolicitanteResponseDTO response = service.buscarPorId(id);
 
         return ResponseEntity.ok(response);
+
+    }
+
+    @GetMapping("/{id}/solicitacoes")
+    public ResponseEntity<List<SolicitacaoResumoResponseDTO>> buscarVariosPorId(@PathVariable Long id) {
+
+        List<SolicitacaoResumoResponseDTO> response = service.buscarVariosPorId(id);
+
+        return ResponseEntity.ok().body(response);
+
 
     }
 

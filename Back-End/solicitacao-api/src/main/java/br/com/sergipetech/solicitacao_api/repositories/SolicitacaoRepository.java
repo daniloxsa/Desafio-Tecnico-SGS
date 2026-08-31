@@ -37,4 +37,6 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
             @Param("valorMin") BigDecimal valorMin,
             @Param("valorMax") BigDecimal valorMax
     );
+
+    List<Solicitacao> findAllBySolicitante_Id(Long id);
 }
