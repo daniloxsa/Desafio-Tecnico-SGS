@@ -3,6 +3,16 @@ const API_URL = 'http://localhost:8080';
 let listaSolicitacoes = [];
 let listaSolicitantes = [];
 
+let solicitacaoSelecionadaId = null;
+
+const TRANSACOES_VALIDAS = {
+    'SOLICITADO': ['LIBERADO', 'REJEITADO'],
+    'LIBERADO': ['APROVADO', 'REJEITADO'],
+    'APROVADO': ['CANCELADO'],
+    'REJEITADO': [],
+    'CANCELADO': []
+};
+
 
 // recurso categorias
 
@@ -110,7 +120,7 @@ function renderizarSolicitacoes() {
 
 function criarLinhaSolicitacao(solicitacao) {
     const linha = document.createElement('tr');
-    const status = solicitacao.status ? solicitacao.status.toLowerCase() : '';
+    const statusClass = solicitacao.status ? solicitacao.status.toLowerCase() : '';
 
     linha.innerHTML = `
         <td>${solicitacao.id}</td>
@@ -118,7 +128,7 @@ function criarLinhaSolicitacao(solicitacao) {
         <td>${solicitacao.dataSolicitacao}</td>
         <td>${solicitacao.categoriaNome}</td>
         <td>
-            <span class="status ${status}">
+            <span class="status ${statusClass}" onclick="abrirModalStatus(${solicitacao.id})" style="cursor: pointer;" title="Clique para alterar o status">
                 ${solicitacao.status}
             </span>
         </td>
@@ -131,6 +141,91 @@ function criarLinhaSolicitacao(solicitacao) {
     `;
 
     return linha;
+}
+
+// modal status
+
+function abrirModalStatus(id) {
+    const solicitacao = listaSolicitacoes.find(s => s.id === id);
+    if (!solicitacao) return;
+
+    solicitacaoSelecionadaId = id;
+
+    const selectStatus = document.getElementById('statusSelect');
+    if (!selectStatus) return;
+
+    const statusAtual = solicitacao.status ? solicitacao.status.toUpperCase() : '';
+    const novosStatusPermitidos = TRANSACOES_VALIDAS[statusAtual] || [];
+
+    if (novosStatusPermitidos.length === 0) {
+        alert(`O status atual (${statusAtual}) é final e não pode ser alterado.`);
+        return;
+    }
+
+    selectStatus.innerHTML = '<option value="">Selecione o novo status</option>';
+
+    novosStatusPermitidos.forEach(novoStatus => {
+        const option = document.createElement('option');
+        option.value = novoStatus;
+        option.textContent = novoStatus;
+        selectStatus.appendChild(option);
+    });
+
+    const modal = document.getElementById('statusModal');
+    if (modal) modal.style.display = 'flex';
+}
+
+function fecharModalStatus() {
+    const modal = document.getElementById('statusModal');
+    if (modal) modal.style.display = 'none';
+    solicitacaoSelecionadaId = null;
+}
+
+function configurarFormularioStatus() {
+    const form = document.getElementById('formAlterarStatus');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const novoStatus = document.getElementById('statusSelect')?.value;
+
+        if (!novoStatus) {
+            alert('Por favor, selecione um novo status!');
+            return;
+        }
+
+        if (!solicitacaoSelecionadaId) {
+            alert('Erro: Nenhuma solicitação foi selecionada.');
+            return;
+        }
+
+        await enviarAlteracaoStatus(solicitacaoSelecionadaId, novoStatus);
+    });
+}
+
+async function enviarAlteracaoStatus(id, novoStatus) {
+    try {
+        const resposta = await fetch(`${API_URL}/solicitacoes/${id}/status`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ statusSolicitacao: novoStatus })
+        });
+
+        if (resposta.ok) {
+            fecharModalStatus();
+            carregarSolicitacoes();
+            return;
+        }
+
+        const erroData = await resposta.json().catch(() => null);
+        alert(erroData?.message || 'Erro ao alterar o status da solicitação.');
+    } catch (erro) {
+        console.error('Erro de conexão ao alterar status:', erro);
+        alert('Erro de conexão com o servidor.');
+    }
 }
 
 // filtros
@@ -290,7 +385,7 @@ function configurarEventos() {
     document.getElementById('btnAbrirCriar')?.addEventListener('click', abrirModalCriacao);
     document.getElementById('btnCancelarCriar')?.addEventListener('click', fecharModalCriacao);
 
-    // Fechar modal
+    // Fechar modal criação 
     const modalCriar = document.getElementById('createModal');
     if (modalCriar) {
         modalCriar.addEventListener('click', (e) => {
@@ -299,6 +394,20 @@ function configurarEventos() {
             }
         });
     }
+
+    // Modal de alteração de status
+    document.getElementById('btnCancelarStatus')?.addEventListener('click', fecharModalStatus);
+
+    // Fechar modal status 
+    const modalStatus = document.getElementById('statusModal');
+    if (modalStatus) {
+        modalStatus.addEventListener('click', (e) => {
+            if (e.target === modalStatus) {
+                fecharModalStatus();
+            }
+        });
+    }
+
     // Filtros
     document.getElementById('btnFiltrar')?.addEventListener('click', carregarSolicitacoes);
     document.getElementById('btnLimpar')?.addEventListener('click', limparFiltros);
@@ -316,4 +425,5 @@ document.addEventListener('DOMContentLoaded', () => {
     carregarSolicitacoes();
     configurarFormularioCriacao();
     configurarEventos();
+    configurarFormularioStatus();
 });
