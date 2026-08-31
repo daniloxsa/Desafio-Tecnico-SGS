@@ -19,34 +19,39 @@
 
         <h2 class="page-title">SOLICITAÇÕES</h2>
 
-        <!-- FILTROS -->
         <section class="filter-box">
             <div class="filter-inputs">
-                <select class="input-field">
+                <select class="input-field" id="filterStatus">
                     <option value="">Status</option>
+                    <option value="SOLICITADO">SOLICITADO</option>
+                    <option value="LIBERADO">LIBERADO</option>
+                    <option value="APROVADO">APROVADO</option>
+                    <option value="REJEITADO">REJEITADO</option>
+                    <option value="CANCELADO">CANCELADO</option>
                 </select>
-
-                <select class="input-field">
+        
+                <select class="input-field" id="filterCategoria">
                     <option value="">Categoria</option>
+                 
                 </select>
-
-                <input type="date" class="input-field">
-                <input type="date" class="input-field">
-                <input type="number" class="input-field" placeholder="valor">
-                <input type="number" class="input-field" placeholder="valor">
+        
+                <input type="date" class="input-field" id="filterDataInicio">
+                <input type="date" class="input-field" id="filterDataFim">
+                <input type="number" class="input-field" id="filterValorMin" placeholder="Valor Mín.">
+                <input type="number" class="input-field" id="filterValorMax" placeholder="Valor Máx.">
             </div>
-
+        
             <div class="filter-actions">
-                <button class="btn-filter">FILTRAR</button>
-                <button class="btn-clear">LIMPAR</button>
+                <button class="btn-filter" id="btnFiltrar">FILTRAR</button>
+                <button class="btn-clear" id="btnLimpar">LIMPAR</button>
             </div>
         </section>
 
-        <!-- TABELA DE SOLICITAÇÕES -->
         <section class="table-wrapper">
             <table class="solicitacoes-table">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Solicitante</th>
                         <th>Data</th>
                         <th>Categoria</th>
@@ -98,25 +103,53 @@
                 </tbody>
             </table>
 
-            <!-- BOTÃO DE NOVA SOLICITAÇÃO -->
-            <button class="btn-floating">+</button>
+            <button class="btn-floating" id="btnAbrirCriar">+</button>
         </section>
 
     </main>
 
-    <!-- MODAL DE CRIAÇÃO -->
-    <div class="modal-overlay" id="createModal">
-        <div class="modal-content">
-            <form class="modal-form">
-                <input type="number" class="modal-input" placeholder="valor">
-                <input type="text" class="modal-input" placeholder="categoria">
-                <input type="text" class="modal-input" placeholder="solicitante">
-                <textarea class="modal-input textarea" placeholder="descrição"></textarea>
 
-                <button type="button" class="btn-submit">CRIAR</button>
-            </form>
+<div class="modal-overlay" id="createModal">
+    <div class="modal-content">
+        <h3 style="color: #4285f4; margin-bottom: 15px;">Nova Solicitação</h3>
+        <form class="modal-form" id="formCriarSolicitacao">
+          
+            <input type="number" step="0.01" class="modal-input" id="createValor" placeholder="valor" required>
+           
+            <select class="modal-input" id="createCategoria" required>
+                <option value="">categoria</option>
+            </select>
+
+            <input type="text" class="modal-input" id="createSolicitanteInput" list="solicitantesList"
+                placeholder="solicitante" autocomplete="off" required>
+            <datalist id="solicitantesList"></datalist>
+
+            <textarea class="modal-input textarea" id="createDescricao" placeholder="descrição" required></textarea>
+
+            <div style="display: flex; gap: 10px; width: 100%; justify-content: flex-end;">
+                <button type="button" class="btn-clear" id="btnCancelarCriar">CANCELAR</button>
+                <button type="submit" class="btn-submit">CRIAR</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal-overlay" id="detailsModal">
+    <div class="modal-content">
+        <h3>Detalhes da Solicitação</h3>
+
+        <div class="modal-body">
+            <p><strong>CPF / CNPJ do Solicitante:</strong> <span id="modalCpfCnpj"></span></p>
+
+            <p><strong>Descrição:</strong></p>
+            <p id="modalDescricao" class="modal-descricao"></p>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn-clear" id="btnCloseDetails">FECHAR</button>
         </div>
     </div>
+</div>
 
     <script src="app.js"></script>
 

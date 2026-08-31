@@ -308,3 +308,29 @@ body {
     background-color: #00c853;
 }
 
+
+.modal-content h3 {
+    color: #4285f4;
+    margin-bottom: 15px;
+}
+
+.modal-body p {
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.modal-descricao {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    margin-top: 5px;
+    max-height: 150px;
+    overflow-y: auto;
+    word-break: break-word;
+}
+
+.modal-footer {
+    text-align: right;
+    margin-top: 15px;
+}
