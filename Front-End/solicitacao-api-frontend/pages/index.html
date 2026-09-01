@@ -5,14 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SGS • Gerenciamento de Solicitações</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../assets/style.css">
 </head>
 
 <body>
 
     <header class="navbar">
         <h1 class="logo">SGS • Gerenciamento de Solicitações</h1>
-        <button class="btn-nav">Solicitantes</button>
+                <a href="solicitantes.html">
+                    <button class="btn-nav">Solicitantes</button>
+                </a>
     </header>
 
     <main class="main-container">
@@ -145,8 +147,9 @@
             <p id="modalDescricao" class="modal-descricao"></p>
         </div>
 
-        <div class="modal-footer">
-            <button type="button" class="btn-clear" id="btnCloseDetails">FECHAR</button>
+        <div class="modal-footer modal-footer-flex">
+            <button type="button" class="btn-clear" id="btnDeletarSolicitacao">EXCLUIR</button>
+            <button type="button" class="btn-clear" id="btnCloseDetails">Fechar</button>
         </div>
     </div>
 </div>
@@ -168,7 +171,7 @@
     </div>
 </div>
 
-    <script src="app.js"></script>
+    <script src="../script/app.js"></script>
 
 </body>
 

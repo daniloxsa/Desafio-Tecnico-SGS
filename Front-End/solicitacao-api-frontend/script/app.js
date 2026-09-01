@@ -4,6 +4,7 @@ let listaSolicitacoes = [];
 let listaSolicitantes = [];
 
 let solicitacaoSelecionadaId = null;
+let solicitacaoDetalheId = null;
 
 const TRANSACOES_VALIDAS = {
     'SOLICITADO': ['LIBERADO', 'REJEITADO'],
@@ -245,25 +246,53 @@ function limparFiltros() {
 // modal detalhes
 
 function abrirModalDetalhes(id) {
-    const solicitacao = listaSolicitacoes.find(
-        solicitacao => solicitacao.id === id
-    );
-
+    const solicitacao = listaSolicitacoes.find(s => s.id === id);
     if (!solicitacao) return;
+
+    solicitacaoDetalheId = id; 
 
     document.getElementById('modalCpfCnpj').innerText = solicitacao.solicitanteCpfCnpj || 'Não informado';
     document.getElementById('modalDescricao').innerText = solicitacao.descricao || 'Sem descrição';
 
     const modal = document.getElementById('detailsModal');
-    if (modal) {
-        modal.style.display = 'flex';
-    }
+    if (modal) modal.style.display = 'flex';
+}
+
+function fecharModalDetalhes() {
+    const modal = document.getElementById('detailsModal');
+    if (modal) modal.style.display = 'none';
+    solicitacaoDetalheId = null;
 }
 
 function fecharModalDetalhes() {
     const modal = document.getElementById('detailsModal');
     if (modal) {
         modal.style.display = 'none';
+    }
+}
+
+
+async function deletarSolicitacao() {
+    if (!solicitacaoDetalheId) return;
+
+    const confirmou = confirm('Tem certeza que deseja excluir esta solicitação?');
+    if (!confirmou) return;
+
+    try {
+        const resposta = await fetch(`${API_URL}/solicitacoes/${solicitacaoDetalheId}`, {
+            method: 'DELETE'
+        });
+
+        if (resposta.ok || resposta.status === 204) {
+            fecharModalDetalhes();
+            carregarSolicitacoes(); // Recarrega a tabela
+            return;
+        }
+
+        alert('Erro ao excluir a solicitação.');
+    } catch (erro) {
+        console.error('Erro de conexão ao deletar solicitação:', erro);
+        alert('Erro de conexão com o servidor.');
     }
 }
 
@@ -384,6 +413,7 @@ function configurarEventos() {
     // Modal de criação
     document.getElementById('btnAbrirCriar')?.addEventListener('click', abrirModalCriacao);
     document.getElementById('btnCancelarCriar')?.addEventListener('click', fecharModalCriacao);
+    document.getElementById('btnDeletarSolicitacao')?.addEventListener('click', deletarSolicitacao);
 
     // Fechar modal criação 
     const modalCriar = document.getElementById('createModal');

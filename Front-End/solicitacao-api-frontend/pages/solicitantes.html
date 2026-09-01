@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGS • Solicitantes</title>
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <h1 class="logo">SGS • Gerenciamento de Solicitações</h1>
+        <a href="index.html">
+            <button class="btn-nav">Solicitações</button>
+        </a>
+    </header>
+
+    <main class="main-container">
+        <h2 class="page-title">SOLICITANTES</h2>
+
+        <div class="content-grid">
+
+            <!-- Tabela da esquerda: Solicitantes -->
+            <section class="table-wrapper">
+                <table class="solicitacoes-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>CPF / CNPJ</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableSolicitantesBody">
+                        <tr>
+                            <td>1</td>
+                            <td>João Silva</td>
+                            <td>09491153552</td>
+                            <td>
+                                <button class="btn-filter">Ver mais</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Painel da direita: Solicitações do Solicitante -->
+            <aside class="side-panel">
+                <h3>SOLICITAÇÕES</h3>
+                <div class="side-panel-content" id="panelSolicitacoes">
+                    <div class="panel-placeholder-item"></div>
+                    <div class="panel-placeholder-item"></div>
+                    <div class="panel-placeholder-item"></div>
+                    <div class="panel-placeholder-item"></div>
+                </div>
+            </aside>
+
+        </div>
+    </main>
+
+    <script src="../script/solicitantes.js"></script>
+
+</body>
+
+</html>
