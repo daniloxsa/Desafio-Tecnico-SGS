@@ -99,13 +99,14 @@ function obterFiltros() {
 
     if (status) params.append('status', status);
     if (categoriaId) params.append('categoriaId', categoriaId);
-    if (dataInicio) params.append('dataInicio', `${dataInicio}T00:00:00`);
-    if (dataFim) params.append('dataFim', `${dataFim}T23:59:59`);
+    if (dataInicio) params.append('dataInicio', dataInicio);
+    if (dataFim) params.append('dataFim', dataFim);
     if (valorMin) params.append('valorMin', valorMin);
     if (valorMax) params.append('valorMax', valorMax);
 
     return params;
 }
+
 
 function renderizarSolicitacoes() {
     const tabela = document.getElementById('tableContainer');
@@ -272,30 +273,6 @@ function fecharModalDetalhes() {
 }
 
 
-async function deletarSolicitacao() {
-    if (!solicitacaoDetalheId) return;
-
-    const confirmou = confirm('Tem certeza que deseja excluir esta solicitação?');
-    if (!confirmou) return;
-
-    try {
-        const resposta = await fetch(`${API_URL}/solicitacoes/${solicitacaoDetalheId}`, {
-            method: 'DELETE'
-        });
-
-        if (resposta.ok || resposta.status === 204) {
-            fecharModalDetalhes();
-            carregarSolicitacoes(); // Recarrega a tabela
-            return;
-        }
-
-        alert('Erro ao excluir a solicitação.');
-    } catch (erro) {
-        console.error('Erro de conexão ao deletar solicitação:', erro);
-        alert('Erro de conexão com o servidor.');
-    }
-}
-
 
 
 // modal criação
@@ -413,7 +390,7 @@ function configurarEventos() {
     // Modal de criação
     document.getElementById('btnAbrirCriar')?.addEventListener('click', abrirModalCriacao);
     document.getElementById('btnCancelarCriar')?.addEventListener('click', fecharModalCriacao);
-    document.getElementById('btnDeletarSolicitacao')?.addEventListener('click', deletarSolicitacao);
+
 
     // Fechar modal criação 
     const modalCriar = document.getElementById('createModal');

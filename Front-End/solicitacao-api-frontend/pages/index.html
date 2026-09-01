@@ -12,9 +12,9 @@
 
     <header class="navbar">
         <h1 class="logo">SGS • Gerenciamento de Solicitações</h1>
-                <a href="solicitantes.html">
-                    <button class="btn-nav">Solicitantes</button>
-                </a>
+        <a href="solicitantes.html">
+            <button class="btn-nav">Solicitantes</button>
+        </a>
     </header>
 
     <main class="main-container">
@@ -31,18 +31,17 @@
                     <option value="REJEITADO">REJEITADO</option>
                     <option value="CANCELADO">CANCELADO</option>
                 </select>
-        
+
                 <select class="input-field" id="filterCategoria">
                     <option value="">Categoria</option>
-                 
                 </select>
-        
+
                 <input type="date" class="input-field" id="filterDataInicio">
                 <input type="date" class="input-field" id="filterDataFim">
                 <input type="number" class="input-field" id="filterValorMin" placeholder="Valor Mín.">
                 <input type="number" class="input-field" id="filterValorMax" placeholder="Valor Máx.">
             </div>
-        
+
             <div class="filter-actions">
                 <button class="btn-filter" id="btnFiltrar">FILTRAR</button>
                 <button class="btn-clear" id="btnLimpar">LIMPAR</button>
@@ -64,44 +63,6 @@
                 </thead>
 
                 <tbody id="tableContainer">
-                    <tr>
-                        <td>João Silva</td>
-                        <td>29/08/2026</td>
-                        <td>Material</td>
-                        <td>
-                            <span class="status solicitado">SOLICITADO</span>
-                        </td>
-                        <td>R$ 150,00</td>
-                        <td>
-                            <button class="btn-details">Ver mais</button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Maria Souza</td>
-                        <td>28/08/2026</td>
-                        <td>Equipamento</td>
-                        <td>
-                            <span class="status aprovado">APROVADO</span>
-                        </td>
-                        <td>R$ 850,00</td>
-                        <td>
-                            <button class="btn-details">Ver mais</button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Carlos Lima</td>
-                        <td>27/08/2026</td>
-                        <td>Serviço</td>
-                        <td>
-                            <span class="status rejeitado">REJEITADO</span>
-                        </td>
-                        <td>R$ 320,00</td>
-                        <td>
-                            <button class="btn-details">Ver mais</button>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
 
@@ -110,66 +71,63 @@
 
     </main>
 
+    <div class="modal-overlay" id="createModal">
+        <div class="modal-content">
+            <h3 style="color: #4285f4; margin-bottom: 15px;">Nova Solicitação</h3>
+            <form class="modal-form" id="formCriarSolicitacao">
+                <input type="number" step="0.01" class="modal-input" id="createValor" placeholder="valor" required>
 
-<div class="modal-overlay" id="createModal">
-    <div class="modal-content">
-        <h3 style="color: #4285f4; margin-bottom: 15px;">Nova Solicitação</h3>
-        <form class="modal-form" id="formCriarSolicitacao">
-          
-            <input type="number" step="0.01" class="modal-input" id="createValor" placeholder="valor" required>
-           
-            <select class="modal-input" id="createCategoria" required>
-                <option value="">categoria</option>
-            </select>
+                <select class="modal-input" id="createCategoria" required>
+                    <option value="">categoria</option>
+                </select>
 
-            <input type="text" class="modal-input" id="createSolicitanteInput" list="solicitantesList"
-                placeholder="solicitante" autocomplete="off" required>
-            <datalist id="solicitantesList"></datalist>
+                <input type="text" class="modal-input" id="createSolicitanteInput" list="solicitantesList"
+                    placeholder="solicitante" autocomplete="off" required>
+                <datalist id="solicitantesList"></datalist>
 
-            <textarea class="modal-input textarea" id="createDescricao" placeholder="descrição" required></textarea>
+                <textarea class="modal-input textarea" id="createDescricao" placeholder="descrição" required></textarea>
 
-            <div style="display: flex; gap: 10px; width: 100%; justify-content: flex-end;">
-                <button type="button" class="btn-clear" id="btnCancelarCriar">CANCELAR</button>
-                <button type="submit" class="btn-submit">CRIAR</button>
+                <div style="display: flex; gap: 10px; width: 100%; justify-content: flex-end;">
+                    <button type="button" class="btn-clear" id="btnCancelarCriar">CANCELAR</button>
+                    <button type="submit" class="btn-submit">CRIAR</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="detailsModal">
+        <div class="modal-content">
+            <h3>Detalhes da Solicitação</h3>
+
+            <div class="modal-body">
+                <p><strong>CPF / CNPJ do Solicitante:</strong> <span id="modalCpfCnpj"></span></p>
+
+                <p><strong>Descrição:</strong></p>
+                <p id="modalDescricao" class="modal-descricao"></p>
             </div>
-        </form>
-    </div>
-</div>
-
-<div class="modal-overlay" id="detailsModal">
-    <div class="modal-content">
-        <h3>Detalhes da Solicitação</h3>
-
-        <div class="modal-body">
-            <p><strong>CPF / CNPJ do Solicitante:</strong> <span id="modalCpfCnpj"></span></p>
-
-            <p><strong>Descrição:</strong></p>
-            <p id="modalDescricao" class="modal-descricao"></p>
-        </div>
-
-        <div class="modal-footer modal-footer-flex">
-            <button type="button" class="btn-clear" id="btnDeletarSolicitacao">EXCLUIR</button>
-            <button type="button" class="btn-clear" id="btnCloseDetails">Fechar</button>
-        </div>
-    </div>
-</div>
-
-<div id="statusModal" class="modal-overlay">
-    <div class="modal-content">
-        <h3>Alterar Status</h3>
-
-        <form id="formAlterarStatus" class="modal-form">
-            <select id="statusSelect" class="modal-input" required>
-                <option value="">Selecione o novo status</option>
-            </select>
 
             <div class="modal-footer modal-footer-flex">
-                <button type="button" id="btnCancelarStatus" class="btn-clear">Cancelar</button>
-                <button type="submit" class="btn-submit">Atualizar</button>
+                <button type="button" class="btn-clear" id="btnCloseDetails">Fechar</button>
             </div>
-        </form>
+        </div>
     </div>
-</div>
+
+    <div id="statusModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Alterar Status</h3>
+
+            <form id="formAlterarStatus" class="modal-form">
+                <select id="statusSelect" class="modal-input" required>
+                    <option value="">Selecione o novo status</option>
+                </select>
+
+                <div class="modal-footer modal-footer-flex">
+                    <button type="button" id="btnCancelarStatus" class="btn-clear">Cancelar</button>
+                    <button type="submit" class="btn-submit">Atualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script src="../script/app.js"></script>
 
