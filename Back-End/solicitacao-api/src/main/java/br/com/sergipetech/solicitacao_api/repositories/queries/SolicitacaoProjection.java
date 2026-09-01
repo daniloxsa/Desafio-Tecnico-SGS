@@ -3,14 +3,14 @@ package br.com.sergipetech.solicitacao_api.repositories.queries;
 import br.com.sergipetech.solicitacao_api.enums.StatusSolicitacao;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public interface SolicitacaoProjection {
 
     Long getId();
     String getDescricao();
     BigDecimal getValor();
-    LocalDateTime getDataSolicitacao();
+    LocalDate getDataSolicitacao();
     StatusSolicitacao getStatus();
 
     Long getSolicitanteId();

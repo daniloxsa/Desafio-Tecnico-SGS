@@ -13,7 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.math.BigDecimal;
 import java.net.URI;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -29,8 +29,8 @@ public class SolicitacaoController {
     public ResponseEntity<List<SolicitacaoResponseDTO>> listarSolicitacoes (
             @RequestParam(required = false) StatusSolicitacao status,
             @RequestParam(required = false) Long categoriaId,
-            @RequestParam(required = false) LocalDateTime dataInicio,
-            @RequestParam(required = false) LocalDateTime dataFim,
+            @RequestParam(required = false) LocalDate dataInicio,
+            @RequestParam(required = false) LocalDate dataFim,
             @RequestParam(required = false) BigDecimal valorMin,
             @RequestParam(required = false) BigDecimal valorMax
     ) {
@@ -63,13 +63,6 @@ public class SolicitacaoController {
 
         return ResponseEntity.created(uri).body(responseDTO);
 
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletarPorId(@PathVariable Long id) {
-
-        service.deletarPorId(id);
-        return ResponseEntity.noContent().build();
     }
 
 

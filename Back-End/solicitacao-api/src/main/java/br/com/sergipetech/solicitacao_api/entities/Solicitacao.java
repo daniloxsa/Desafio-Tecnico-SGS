@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 @Entity
@@ -19,7 +19,7 @@ public class Solicitacao {
 
     private BigDecimal valor;
 
-    private LocalDateTime data_solicitacao;
+    private LocalDate data_solicitacao;
     
     @Enumerated(EnumType.STRING)
     private StatusSolicitacao statusSolicitacao = StatusSolicitacao.SOLICITADO;
@@ -35,7 +35,7 @@ public class Solicitacao {
     public Solicitacao() {
     }
 
-    public Solicitacao(String descricao, BigDecimal valor, LocalDateTime data_solicitacao, StatusSolicitacao statusSolicitacao) {
+    public Solicitacao(String descricao, BigDecimal valor, LocalDate data_solicitacao, StatusSolicitacao statusSolicitacao) {
         this.descricao = descricao;
         this.valor = valor;
         this.data_solicitacao = data_solicitacao;
@@ -66,11 +66,11 @@ public class Solicitacao {
         this.valor = valor;
     }
 
-    public LocalDateTime getData_solicitacao() {
+    public LocalDate getData_solicitacao() {
         return data_solicitacao;
     }
 
-    public void setData_solicitacao(LocalDateTime data_solicitacao) {
+    public void setData_solicitacao(LocalDate data_solicitacao) {
         this.data_solicitacao = data_solicitacao;
     }
 

@@ -17,8 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,8 +37,8 @@ public class SolicitacaoService {
     public List<SolicitacaoResponseDTO> listarSolicitacoes(
             StatusSolicitacao status,
             Long categoriaId,
-            LocalDateTime dataInicio,
-            LocalDateTime dataFim,
+            LocalDate dataInicio,
+            LocalDate dataFim,
             BigDecimal valorMin,
             BigDecimal valorMax
     ) {
@@ -88,7 +87,7 @@ public class SolicitacaoService {
         solicitacao.setCategoria(categoria);
 
 
-        solicitacao.setData_solicitacao(LocalDateTime.now());
+        solicitacao.setData_solicitacao(LocalDate.now());
 
         solicitacaoRepository.save(solicitacao);
 
@@ -109,15 +108,6 @@ public class SolicitacaoService {
 
     }
 
-    public void deletarPorId(Long id) {
-
-        if (!solicitacaoRepository.existsById(id)) {
-            throw new ResourceNotFoundException(id);
-        }
-
-        solicitacaoRepository.deleteById(id);
-
-    }
 
     public SolicitacaoResponseDTO alterarStatus(Long id, StatusSolicitacaoRequestDTO request) {
         Optional<Solicitacao> solicitacaoOptional = solicitacaoRepository.findById(id) ;

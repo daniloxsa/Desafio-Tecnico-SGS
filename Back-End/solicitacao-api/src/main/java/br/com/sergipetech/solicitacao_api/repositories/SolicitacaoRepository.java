@@ -1,15 +1,12 @@
 package br.com.sergipetech.solicitacao_api.repositories;
-
-import br.com.sergipetech.solicitacao_api.dto.solicitacao.SolicitacaoResponseDTO;
 import br.com.sergipetech.solicitacao_api.entities.Solicitacao;
-import br.com.sergipetech.solicitacao_api.enums.StatusSolicitacao;
 import br.com.sergipetech.solicitacao_api.repositories.queries.SolicitacaoProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> {
@@ -32,8 +29,8 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
     List<SolicitacaoProjection> listarSolicitacoes(
             @Param("status") String status,
             @Param("categoriaId") Long categoriaId,
-            @Param("dataInicio") LocalDateTime dataInicio,
-            @Param("dataFim") LocalDateTime dataFim,
+            @Param("dataInicio") LocalDate dataInicio,
+            @Param("dataFim") LocalDate dataFim,
             @Param("valorMin") BigDecimal valorMin,
             @Param("valorMax") BigDecimal valorMax
     );
