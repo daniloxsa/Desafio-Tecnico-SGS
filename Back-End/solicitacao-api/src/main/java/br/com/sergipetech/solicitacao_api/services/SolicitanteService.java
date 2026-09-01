@@ -88,18 +88,21 @@ public class SolicitanteService {
 
     public SolicitanteResponseDTO criarSolicitante(SolicitanteRequestDTO request) {
 
-        if (!DocumentoValidator.isValido(request.cpfCnpj())) {
-            throw new InvalidDocumentException(request.cpfCnpj());
+
+        String bruteRequestCpfCnpj = request.cpfCnpj().replaceAll("\\D", "");
+        
+        if (!DocumentoValidator.isValido(bruteRequestCpfCnpj)) {
+            throw new InvalidDocumentException(bruteRequestCpfCnpj);
         }
 
 
-        if (solicitanteRepository.existsByCpfCnpj(request.cpfCnpj())) {
+        if (solicitanteRepository.existsByCpfCnpj(bruteRequestCpfCnpj)) {
             throw new DataIntegrityViolationException("CPF/CNPJ já cadastrado");
         }
 
         Solicitante solicitante = new Solicitante(
                 request.nome(),
-                request.cpfCnpj()
+                bruteRequestCpfCnpj
         );
 
         solicitanteRepository.save(solicitante);

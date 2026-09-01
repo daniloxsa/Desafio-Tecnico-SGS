@@ -6,7 +6,6 @@ public class DocumentoValidator {
 
     public static boolean isValido(String documento) {
 
-        documento = documento.replaceAll("\\D", "");
 
         if (documento.length() == 11) {
             return isCpfValido(documento);
